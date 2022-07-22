@@ -38,9 +38,15 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    // TODO: login with name
-    // public function name()
-    // {
-    //     return 'name';
-    // }
-}
+    //per redirezionare la pagina(funzione preso dal use AuthenticatesUsers che usa in questo file)
+    protected function loggedOut(Request $request)
+    {
+        return redirect()->route('login');
+    }
+
+    // cambiare dati richiesti per loggarsi
+ public function username()
+ {
+     return 'name'; //nome colonna nel DB
+ }
+ }

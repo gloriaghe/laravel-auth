@@ -70,20 +70,20 @@
 1. aggiornare i vecchi nomi dei template blade ovunque erano stai usati (controllers, web.php, altri template blade ...)
 
 
-MIEI APPUNTI
+## MIEI APPUNTI Lezione 1:
 
-In web.php scrivo:
+1. In web.php scrivo:
  Route::resource('posts', 'Admin\PostController');
 
-Creo model posts:
+2. Creo model posts:
  php artisan make:model Models/Post
 
 
-Creo controller:
+3. Creo controller:
 php artisan make:controller Admin/PostController --resource
 
 
-Faccio la concatenazione in web.php:
+4. Faccio la concatenazione in web.php:
                 Route::middleware('auth')
                 ->namespace('Admin')
                 ->name('admin.')
@@ -93,6 +93,11 @@ Faccio la concatenazione in web.php:
                         Route::resource('posts', 'PostController');
                 });
 
+## Lezione 2:
+
+
+1. Rifacciamo Controller PostController
+php artisan make:controller --resource --model=Models/Post Admin/PostController
 
 
 
