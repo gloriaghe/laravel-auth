@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use Slugger;
-    static protected $slugColumnName = 'percorso';
+    // static protected $slugColumnName = 'percorso';
 }
 

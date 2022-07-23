@@ -28,4 +28,11 @@ class AdminController extends Controller
         $user = Auth::user();
         return view('admin.dashbord');
     }
+
+    public function temp()
+    {
+        return view('admin.temp');
+    }
+
+
 }
