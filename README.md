@@ -99,5 +99,6 @@ php artisan make:controller Admin/PostController --resource
 1. Rifacciamo Controller PostController
 php artisan make:controller --resource --model=Models/Post Admin/PostController
 
+php artisan make:controller --resource --model=Models/User Admin/UserController
 
 

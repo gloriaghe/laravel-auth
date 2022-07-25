@@ -8,31 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
+    //NON è NECESSARIO SE METTIAMO il MIDDLEWARE in WEB.PHP
     // public function __construct()
     // {
     //     $this->middleware('auth');
     // }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function dashboard()
     {
         $user = Auth::user();
         return view('admin.dashbord');
     }
 
-    public function temp()
-    {
-        return view('admin.temp');
-    }
+    // public function temp()
+    // {
+    //     return view('admin.temp');
+    // }
 
 
 }

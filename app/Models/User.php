@@ -36,4 +36,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userDetails(){
+        //scelgo quale mi serve
+        return $this->hasOne('App\Models\UserDetails'); //nella tabella che non ha il foreign Key
+        //return $this->belongsTo(''); //nella tabella del foreign Key
+
+    }
 }

@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\UserDetails;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -53,6 +58,10 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'address' => [ 'nullable', 'string', 'max:100'],
+            'birth' => [ 'nullable', 'date'],
+            'phone' => ['nullable',  'string', 'max:20'],
+
         ]);
     }
 
@@ -64,10 +73,54 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        // try{
+        $user = DB::transection(function () use ($data){
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+
         ]);
+
+        UserDetails::create([
+            'user_id' => $user->id,
+            'address' => $data['address'],
+            'phone' => $data['phone'],
+            'birth' => $data['birth'],
+        ]);
+        return $user;
+    });
+
+        return $user;
     }
+    // catch (Exception $e){
+    //     return null;
+    // }
+}
+
+
+public function register(Request $request)
+{
+    $this->validator($request->all())->validate();
+
+    $user = $this->create($request->all());
+
+if($user) {
+    event(new Registered($user));
+
+    $this->guard()->login($user);
+
+    if ($response = $this->registered($request, $user)) {
+        return $response;
+    }
+
+    return $request->wantsJson()
+
+                ? new JsonResponse([], 201)
+                : redirect($this->redirectPath());
+}
+else{
+    return redirect()->route('resgister')->with('db-error', 'Errore nel DB. Riprovare');
+}
+}
 }
